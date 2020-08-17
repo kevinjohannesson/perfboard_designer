@@ -84,7 +84,12 @@ const initialState: I_state = {
     },
     {
       ptnum: 117,
-      connectedPoints: [27, 113],
+      connectedPoints: [27, 123, 113],
+      color: 'red'
+    },
+    {
+      ptnum: 123,
+      connectedPoints: [117],
       color: 'red'
     },
     {
@@ -104,7 +109,12 @@ const initialState: I_state = {
     },
     {
       ptnum: 357,
-      connectedPoints: [159],
+      connectedPoints: [159, 351],
+      color: 'purple'
+    },
+    {
+      ptnum: 351,
+      connectedPoints: [357],
       color: 'purple'
     },
     {
@@ -153,7 +163,8 @@ const initialState: I_state = {
 
 
   pads: [],
-  tool: null,
+  // tool: null,
+  tool: 'connection',
   current_ptnum: null,
 }
 
