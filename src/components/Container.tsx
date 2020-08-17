@@ -65,13 +65,8 @@ export default function Container({height, width, children}: Props): ReactElemen
   }
   }, [state.height, state.width])
 
-  const scrollHandler = (e: any)=> {
-    console.log(e.deltaY)
-    console.log('hallo')}
-
-    const touchEnd = () => {console.log('end')}
   return (
-    <CONTAINER ref={ref} h={height} w={width} onTouchEnd={touchEnd} onClick={scrollHandler} onScroll={scrollHandler} onWheel={scrollHandler} >
+    <CONTAINER ref={ref} h={height} w={width}  >
       <Context.Provider value={state}>
         {children}
       </Context.Provider>

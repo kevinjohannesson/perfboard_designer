@@ -6,19 +6,16 @@ import { Context } from './Container'
 import { useSelector } from 'react-redux';
 import { getScale, getZoom } from '../redux/reducers/app/selectors';
 
-interface Props {
-  // size: number;
-}
 
-export default function Grid({}: Props): ReactElement {
+export default function Grid(): ReactElement {
   const container = useContext(Context)
   const scale = useSelector(getScale)
   const zoom = useSelector(getZoom)
-  console.log(scale)
-  console.log(zoom)
+  // console.log(scale)
+  // console.log(zoom)
 
 
-  console.log(container);
+  // console.log(container);
 
   const lines = {
     // axes:
@@ -101,8 +98,8 @@ const GRID = styled.svg`
   top: 0;
   left: 0;
   
-  background-color: green;
-  // background-color: #202125;
+  // background-color: green;
+  background-color: #202125;
 
   z-index: -1;
 `;
