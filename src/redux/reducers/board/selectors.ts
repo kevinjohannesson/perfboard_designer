@@ -13,9 +13,13 @@ export const get__columns = ( reducer: I_reducer ) => reducer.BoardReducer.colum
 export const get__pitch = ( reducer: I_reducer ) => reducer.BoardReducer.pitch
 
 export const get__mountingHoles = ( reducer: I_reducer ) => reducer.BoardReducer.mountingHoles
-export const get__grid = ( reducer: I_reducer ) => reducer.BoardReducer.grid
+export const get__grid = ( reducer: I_reducer ) => reducer.BoardReducer.board.grid
 
 export const get__connections = ( reducer: I_reducer ) => reducer.BoardReducer.connections
 export const get__headers = ( reducer: I_reducer ) => reducer.BoardReducer.headers
 
 export const get__wireColor = ( reducer: I_reducer ) => reducer.BoardReducer.wireColor
+
+export const get__view = (reducer: I_reducer ) => reducer.BoardReducer.view
+
+export const get__board = (reducer: I_reducer ) => reducer.BoardReducer.board

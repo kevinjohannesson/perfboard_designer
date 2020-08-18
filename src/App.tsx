@@ -9,15 +9,17 @@ import Board from './components/Board'
 import styled from 'styled-components'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import TimelineIcon from '@material-ui/icons/Timeline';
-import { useDispatch } from 'react-redux'
-import { set__tool, set__current_ptnum, set__wireColor } from './redux/reducers/board/actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { set__tool, set__current_ptnum, set__wireColor, set__view } from './redux/reducers/board/actions'
 import ContextMenu from './components/ContextMenu'
 
 import {wireColors} from './components/CONSTANTS'
+import { get__view } from './redux/reducers/board/selectors'
 
 
 function App() {
   const dispatch = useDispatch()
+  const view = useSelector(get__view)
   // console.log('App')
   const handleClick = ()=>{
     console.log('click')
@@ -49,6 +51,11 @@ function App() {
   }
 
 
+  const toggleView = () => {
+    console.log('Toggling view')
+    dispatch(set__view(view === 'front' ? 'back' : 'front'))
+  }
+
   
   
 
@@ -58,7 +65,7 @@ function App() {
     <Container height={'100%'} width={'100%'}>
       <Grid />
       <ContextMenu />
-      <Board />
+      <Board height={50} width={70} rows={18} columns={24} pitch={2.54} layer={'single'}/>
 {/*       
       <Gizmo />
       <ObjectLayer /> */}
@@ -77,6 +84,10 @@ function App() {
         <WIRE_COLOR_SWATCH key = { i } color={color} onClick={()=>dispatch(set__wireColor(color))}></WIRE_COLOR_SWATCH> )
       }
       </TOOLBAR>
+      <WRAPPER>
+        
+        <SIDE_TOGGLE onClick={toggleView}><span>{view === 'front' ? 'Front-' : 'Back-'}View</span></SIDE_TOGGLE>
+      </WRAPPER>
     </>
 
   );
@@ -104,4 +115,37 @@ const TOOLBAR = styled.div`
 
  height: 50px;
 
-`
+ 
+ `
+ 
+ const WRAPPER = styled.div`
+ height: 100%;
+ width: 100%;
+ 
+ position: fixed;
+ top: 0;
+ left: 0;
+ 
+ color: white;
+ 
+ display: flex;
+ justify-content: center;
+ align-items: flex-start;
+ 
+ // border: 3px solid red;
+ z-index: 9;
+ 
+ pointer-events: none;
+ `
+ 
+ const SIDE_TOGGLE = styled.button`
+ font-size: 18px;
+ pointer-events: auto;
+  &:hover {
+    span {
+      display: none;
+    }
+  }
+  &:hover:before {content:"Toggle"}
+  
+ `

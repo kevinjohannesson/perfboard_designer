@@ -1,15 +1,13 @@
 import initialState, { I_state } from './initialState'
-import { SET_TOOL, SET_CURRENT_PTNUM, CREATE_PADS, ADD_CONNECTION, CREATE_HEADER, CREATE_POINTS, SETUP_BOARD, SET_WIRE_COLOR } from './actionTypes';
+import { SET_TOOL, SET_CURRENT_PTNUM, CREATE_PADS, ADD_CONNECTION, CREATE_HEADER, CREATE_POINTS, SETUP_BOARD, SET_WIRE_COLOR, SET_VIEW } from './actionTypes';
 
 export default function(state = initialState, action: any): I_state {
   switch (action.type) {
+    case SET_VIEW: {
+      return {...state, view: action.view}
+    }
     case SETUP_BOARD: {
-      return {
-        ...state, 
-        ...action.board,
-        grid: action.grid,
-        mountingHoles: action.mountingHoles
-      }
+      return {...state, board: action.board}
     }
     case SET_TOOL: {
       return { ...state, tool: action.tool}
@@ -28,7 +26,7 @@ export default function(state = initialState, action: any): I_state {
     
     case ADD_CONNECTION: {
       const connections = [...state.connections]
-      const new_connection = (ptnum: number, connectedPoint: number | null ) => ({ptnum, connectedPoints: connectedPoint !== null ? [connectedPoint] : [], color: state.wireColor })
+      const new_connection = (ptnum: number, connectedPoint: number | null ) => ({ptnum, connectedPoints: connectedPoint !== null ? [connectedPoint] : [], color: state.wireColor, placement: state.view })
       
       const connectionPoint_A_index = state.connections.findIndex(connection => connection.ptnum === state.current_ptnum)
       if(state.current_ptnum && connectionPoint_A_index >= 0) {

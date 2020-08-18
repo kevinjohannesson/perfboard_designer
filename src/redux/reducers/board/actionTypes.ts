@@ -10,4 +10,5 @@ export const SETUP_BOARD = 'SETUP_BOARD'
 
 export const SET_WIRE_COLOR = 'SET_WIRE_COLOR'
 
+export const SET_VIEW = 'SET_VIEW'
 

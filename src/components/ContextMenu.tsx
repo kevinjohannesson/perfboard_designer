@@ -7,7 +7,7 @@ import { get__contextMenuLocation } from '../redux/reducers/app/selectors'
 
 export default function ContextMenu(): ReactElement {
   const location = useSelector(get__contextMenuLocation)
-  console.log(location)
+  // console.log(location)
   return (
     <>
       { location && 
