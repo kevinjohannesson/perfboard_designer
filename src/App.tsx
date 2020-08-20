@@ -8,6 +8,8 @@ import Grid from './components/Grid'
 import Board from './components/Board'
 import styled from 'styled-components'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import { useDispatch, useSelector } from 'react-redux'
 import { set__tool, set__current_ptnum, set__wireColor, set__view } from './redux/reducers/board/actions'
@@ -23,7 +25,29 @@ function App() {
   // console.log('App')
   const handleClick = ()=>{
     console.log('click')
+    const endConnection = (e: any) => {
+      e.preventDefault()
+      dispatch( set__current_ptnum(null) )
+    }
+    document.addEventListener('contextmenu', endConnection)
     dispatch( set__tool('connection'))
+
+
+
+    const exitTool = (e: KeyboardEvent) => {
+      if(e.key === 'Esc' || e.key === 'Escape') {
+        console.log('Exiting tool')
+        dispatch( set__tool(null) )
+        dispatch( set__current_ptnum(null) )
+        document.removeEventListener('keydown', exitTool)
+        document.removeEventListener('contextmenu', endConnection)
+      }
+    }
+    document.addEventListener('keydown', exitTool)
+  }
+  const createHeaders = ()=>{
+    console.log('headers')
+    dispatch( set__tool('header', 'male'))
 
     const exitTool = (e: KeyboardEvent) => {
       if(e.key === 'Esc' || e.key === 'Escape') {
@@ -35,10 +59,9 @@ function App() {
     }
     document.addEventListener('keydown', exitTool)
   }
-  const createHeaders = ()=>{
+  const createHeadersF = ()=>{
     console.log('headers')
-    dispatch( set__tool('header'))
-
+    dispatch( set__tool('header', 'female'))
     const exitTool = (e: KeyboardEvent) => {
       if(e.key === 'Esc' || e.key === 'Escape') {
         console.log('Exiting tool')
@@ -77,7 +100,10 @@ function App() {
       <TimelineIcon />
       </button>
       <button onClick={createHeaders}>
-      <CheckBoxOutlineBlankIcon />
+      <IndeterminateCheckBoxIcon />
+      </button>
+      <button onClick={createHeadersF}>
+      <AddBoxIcon />
       </button>
       {
         Object.keys(wireColors).map((color, i) =>

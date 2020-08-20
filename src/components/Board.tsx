@@ -3,25 +3,22 @@ import React, { ReactElement, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getScale, getZoom } from '../redux/reducers/app/selectors'
 
-import { get__width, get__height, get__grid, get__headers, get__view, get__board } from '../redux/reducers/board/selectors'
+import { get__width, get__height, get__grid, get__view, get__board } from '../redux/reducers/board/selectors'
 import { setup__board } from '../redux/reducers/board/actions'
 // import { I_state } from '../redux/reducers/board/initialState'
 import Paper from './Paper'
-import Pad from './Pad'
-
-import DrilledHoles from './DrilledHoles'
-import Header from './Header'
 
 import ConnectionPoints from './ConnectionPoints'
 import ConnectionLines from './ConnectionLines'
-import { I_Vector } from './Container'
+
 import Headers from './Headers'
 import Indexing from './Indexing'
 import CopperPads from './CopperPads'
 import Points from './Points'
 
 import {Pitch, Layer, Board as I_Board, Grid, Point } from './Board.d'
-import ConnectionPoint from './ConnectionPoint'
+
+import NewHeader from './NewHeader'
 
 
 
@@ -222,6 +219,7 @@ export default function Board(props: Props): ReactElement {
             <ConnectionLines />
             <ConnectionPoints />
             <Headers />
+            <NewHeader />
 
 
             <Points />

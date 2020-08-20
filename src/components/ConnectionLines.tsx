@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { useSelector } from 'react-redux'
 import { get__connections, get__grid, get__view } from '../redux/reducers/board/selectors'
 import { wireColorName } from './CONSTANTS'
-import { Placement } from '../redux/reducers/board/initialState'
+import { Placement } from './Board.d'
 
 
 
@@ -13,12 +13,23 @@ export default function ConnectionLines(): ReactElement {
   const view = useSelector(get__view)
 
   const lines = ([] as {start: number, end: number, color: wireColorName, placement: Placement}[])
-    .concat( ...connections.map(connection => ( 
-        connection.connectedPoints.map( ptnum => ({ start: connection.ptnum, end: ptnum, color: connection.color, placement: connection.placement}))
+    .concat( ...connections.map((connection, i, arr) => ( 
+        connection.connectedPoints.map( (ptnum) => ({ 
+          start: connection.ptnum, 
+          end: ptnum, 
+          // color: arr.find(c => c.ptnum === ptnum) ? (arr.find(c => c.ptnum === ptnum)).color : 'green',
+          color: connection.color, 
+          // placement: (arr.find(c => c.ptnum === ptnum) || connection).placement, 
+          placement: connection.placement
+        }))
+    // )))
     ))).filter( (ptnum_set, i, arr) => {
-      const index = arr.findIndex( comparison_set => comparison_set.start === ptnum_set.end && comparison_set.end === ptnum_set.start)
+      const index = arr.findIndex( comparison_set => comparison_set.start === ptnum_set.end && comparison_set.end === ptnum_set.start && ptnum_set.placement === comparison_set.placement)
       return index === -1 || index > i
     })
+
+    // console.log(lines)
+
 
   return (
     <>
@@ -28,7 +39,7 @@ export default function ConnectionLines(): ReactElement {
 
           return (
             <React.Fragment key = {i}>
-              { view === line.placement &&
+              { 
                 <line
                   x1 = {start.location[view].x} 
                   y1 = {start.location[view].y} 
@@ -37,6 +48,8 @@ export default function ConnectionLines(): ReactElement {
                   style = {{ 
                     stroke: line.color, 
                     strokeWidth:1,
+                    display: view === line.placement ? '' : 'none',
+                    // opacity: view === line.placement ? 1 : 0.25  voor x ray mode
                   }}
                   
                   strokeLinecap="round"

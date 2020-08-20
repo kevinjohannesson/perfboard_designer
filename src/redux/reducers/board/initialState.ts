@@ -1,18 +1,16 @@
 import { I_Vector } from "../../../components/Container"
 import { wireColorName } from "../../../components/CONSTANTS"
-import { Board } from "../../../components/Board.d"
+import { Board, HeaderType, Placement, Header } from "../../../components/Board.d"
 
-export type T_ptnum = number
+export type Ptnum = number
 
-export type T_header = {
-  ptnum: T_ptnum,
-  type: 'male' | 'female',
-  placement: Placement,
-  orientation: 'horizontal' | 'vertical',
+export interface NewHeader {
+  ptnum: Ptnum | null, 
+  width: number,
+  height: number,
+  type: HeaderType
 }
 
-
-export type Placement = 'front' | 'back'
 export interface I_state {
   view: Placement,
 
@@ -20,6 +18,8 @@ export interface I_state {
 
   width: number | null,
   height: number | null,
+
+  newHeader: NewHeader,
 
   mountingHoles: {
     offset: number,
@@ -64,7 +64,7 @@ export interface I_state {
     placement: Placement,
   }[],
 
-  headers: T_header[],
+  headers: Header[],
 
 
   pads: {
@@ -102,6 +102,13 @@ const initialState: I_state = {
   width: null,
   height: null,
 
+  newHeader: {
+    ptnum: null,
+    width: 0,
+    height: 0,
+    type: 'male'
+  },
+
   mountingHoles: null,
   
   rows: null,
@@ -114,172 +121,238 @@ const initialState: I_state = {
   grid: null,
 
   connections: [
-    {
-      ptnum: 431,
-      connectedPoints: [420],
-      color: 'blue',
-      placement: 'back',
-    },
-    {
-      ptnum: 420,
-      connectedPoints: [366, 431],
-      color: 'blue',
-      placement: 'back',
-    },
-    {
-      ptnum: 366,
-      connectedPoints: [420],
-      color: 'blue',
-      placement: 'back',
-    },
+    // {
+    //   ptnum: 368,
+    //   connectedPoints: [377],
+    //   color: 'green',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 377,
+    //   connectedPoints: [368],
+    //   color: 'green',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 431,
+    //   connectedPoints: [420],
+    //   color: 'blue',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 420,
+    //   connectedPoints: [366, 431],
+    //   color: 'blue',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 366,
+    //   connectedPoints: [420],
+    //   color: 'blue',
+    //   placement: 'back',
+    // },
     
-    {
-      ptnum: 15,
-      connectedPoints: [0],
-      color: 'red',
-      placement: 'front',
-    },
-    {
-      ptnum: 0,
-      connectedPoints: [15, 18],
-      color: 'red',
-      placement: 'front',
-    },
-    {
-      ptnum: 18,
-      connectedPoints: [0, 27],
-      color: 'red',
-      placement: 'back',
-    },
-    {
-      ptnum: 27,
-      connectedPoints: [18, 117],
-      color: 'red',
-      placement: 'back',
-    },
-    {
-      ptnum: 117,
-      connectedPoints: [27, 123, 113],
-      color: 'red',
-      placement: 'back',
-    },
-    {
-      ptnum: 123,
-      connectedPoints: [117],
-      color: 'red',
-      placement: 'back',
-    },
-    {
-      ptnum: 113,
-      connectedPoints: [117, 167],
-      color: 'red',
-      placement: 'back',
-    },
-    {
-      ptnum: 167,
-      connectedPoints: [113],
-      color: 'red',
-      placement: 'back',
-    },
-    {
-      ptnum: 159,
-      connectedPoints: [357],
-      color: 'purple',
-      placement: 'back',
-    },
-    {
-      ptnum: 357,
-      connectedPoints: [159, 350],
-      color: 'purple',
-      placement: 'back',
-    },
-    {
-      ptnum: 350,
-      connectedPoints: [357],
-      color: 'purple',
-      placement: 'back',
-    },
-    {
-      ptnum: 205,
-      connectedPoints: [308],
-      color: 'yellow',
-      placement: 'back',
-    },
-    {
-      ptnum: 308,
-      connectedPoints: [205],
-      color: 'yellow',
-      placement: 'back',
-    }
+    // {
+    //   ptnum: 15,
+    //   connectedPoints: [0],
+    //   color: 'red',
+    //   placement: 'front',
+    // },
+    // {
+    //   ptnum: 0,
+    //   connectedPoints: [15, 18],
+    //   color: 'red',
+    //   placement: 'front',
+    // },
+    // {
+    //   ptnum: 18,
+    //   connectedPoints: [0, 27],
+    //   color: 'red',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 27,
+    //   connectedPoints: [18, 117],
+    //   color: 'red',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 117,
+    //   connectedPoints: [27, 123, 113],
+    //   color: 'red',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 123,
+    //   connectedPoints: [117],
+    //   color: 'red',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 113,
+    //   connectedPoints: [117, 167],
+    //   color: 'red',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 167,
+    //   connectedPoints: [113],
+    //   color: 'red',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 159,
+    //   connectedPoints: [357],
+    //   color: 'purple',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 357,
+    //   connectedPoints: [159, 350],
+    //   color: 'purple',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 350,
+    //   connectedPoints: [357],
+    //   color: 'purple',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 205,
+    //   connectedPoints: [308],
+    //   color: 'yellow',
+    //   placement: 'back',
+    // },
+    // {
+    //   ptnum: 308,
+    //   connectedPoints: [205],
+    //   color: 'yellow',
+    //   placement: 'back',
+    // }
   ],
   headers: [
-    {
-      ptnum: 377,
-      type: 'male',
-      placement: 'front',
-      orientation: 'horizontal'
-    },
-    {
-      ptnum: 395,
-      type: 'male',
-      placement: 'front',
-      orientation: 'horizontal'
-    },
-    {
-      ptnum: 413,
-      type: 'male',
-      placement: 'front',
-      orientation: 'horizontal'
-    },
-    {
-      ptnum: 431,
-      type: 'male',
-      placement: 'front',
-      orientation: 'horizontal'
-    },
-    {
-      ptnum: 348,
-      type: 'female',
-      placement: 'front',
-      orientation: 'vertical'
-    },
-    {
-      ptnum: 349,
-      type: 'female',
-      placement: 'front',
-      orientation: 'vertical'
-    },
-    {
-      ptnum: 350,
-      type: 'female',
-      placement: 'front',
-      orientation: 'horizontal'
-    },
+    // {
+    //   ptnum: 377,
+    //   type: 'male',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: false,
+    // },
+    // {
+    //   ptnum: 395,
+    //   type: 'male',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: false,
+    // },
+    // {
+    //   ptnum: 413,
+    //   type: 'male',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: false,
+    // },
+    // {
+    //   ptnum: 431,
+    //   type: 'male',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: false,
+    // },
+    // {
+    //   ptnum: 348,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'vertical',
+    //   double: true,
+    // },
+    // {
+    //   ptnum: 349,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'vertical',
+    //   double: true,
+    // },
+    // {
+    //   ptnum: 315,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: true,
+    // },
+    // {
+    //   ptnum: 333,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: true,
+    // },
+    // {
+    //   ptnum: 351,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: false,
+    // },
+    // {
+    //   ptnum: 369,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: false,
+    // },
+    // {
+    //   ptnum: 314,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: true,
+    // },
+    // {
+    //   ptnum: 332,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: true,
+    // },
+    // {
+    //   ptnum: 350,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: false,
+    // },
+    // {
+    //   ptnum: 368,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'horizontal',
+    //   double: false,
+    // },
     
-    {
-      ptnum: 366,
-      type: 'female',
-      placement: 'front',
-      orientation: 'vertical'
-    },
-    {
-      ptnum: 367,
-      type: 'female',
-      placement: 'front',
-      orientation: 'vertical'
-    },
-    {
-      ptnum: 368,
-      type: 'female',
-      placement: 'front',
-      orientation: 'horizontal'
-    },
+    // {
+    //   ptnum: 366,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'vertical',
+    //   double: true,
+    // },
+    // {
+    //   ptnum: 367,
+    //   type: 'female',
+    //   placement: 'front',
+    //   orientation: 'vertical',
+    //   double: true,
+    // },
+    
 
 
   ],
 
 
   pads: [],
+  // tool: 'header',
   tool: null,
   // tool: 'connection',
   current_ptnum: null,

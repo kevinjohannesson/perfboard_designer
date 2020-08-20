@@ -4,6 +4,9 @@ export type Vector = {
   x: number,
   y: number
 }
+export type Placement = 'front' | 'back'
+
+export type HeaderType = 'male' | 'female'
 
 export interface Board {
   width: number,
@@ -33,3 +36,12 @@ export interface Point {
     back: Vector
   }
 }
+
+export interface Header {
+  ptnum: number,
+  type: HeaderType,
+  placement: Placement,
+  orientation: 'horizontal' | 'vertical',
+  double: boolean,
+}
+

@@ -17,7 +17,8 @@ export default function ConnectionPoints(): ReactElement {
       {  
         connections.map( (connection, i) => {
           const endpoint = connection.connectedPoints.length <= 1
-
+          // console.log(connection)
+          // console.log(endpoint)
           // const pt = grid.points.find(p => p.ptnum === connection.ptnum)
           const pt = grid.points[`pt${connection.ptnum}`]
           const { x, y } = pt.location[view]
